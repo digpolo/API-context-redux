@@ -11,8 +11,13 @@ const Detail = () => {
   console.log(id)
   const url = 'https://rickandmortyapi.com/api/character/' + id
   useEffect(() => {
-    axios(url)
-    .then(res => setCharacter(res))
+    const fetchCharacter = async () => {
+      const res = await axios(url)
+      setCharacter(res.data)
+      // axios(url)
+      // .then(res => setCharacter(res.data))
+    }
+    fetchCharacter()
   }, [])
 
   return (
