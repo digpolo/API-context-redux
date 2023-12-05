@@ -1,5 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useReducer, useEffect} from "react";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import { reducer } from "../reducers/reducer";
 
 const CharStates = createContext()
@@ -16,9 +18,24 @@ const Context = ({children}) => {
     const {list, favs} = state
     console.log(state)
     const url = 'https://rickandmortyapi.com/api/character/'
+    // const url = ''
     useEffect(() => {
         axios(url)
-        .then(res => dispatch({type: 'GET_CHARACTERS', payload: res.data.results}))
+        .then(res => {
+            toast('Se obtuvieron los personajes',  {
+                position: "bottom-right",
+                theme: "dark",
+            })
+            dispatch({type: 'GET_CHARACTERS', payload: res.data.results})
+        })
+        .catch(err => {
+            Swal.fire({
+                title: 'Oops...',
+                text: 'Error al obtener los personajes',
+                icon: 'error',
+                footer: err
+            })
+        })
     }, [])
 
     useEffect(() => {
